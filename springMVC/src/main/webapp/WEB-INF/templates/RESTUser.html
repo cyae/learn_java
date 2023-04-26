@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>测试REST风格url</title>
+</head>
+<body>
+
+<a th:href="@{/user}">点我返回首页</a>
+
+<h1>测试REST风格select</h1>
+<a th:href="@{/user}">getAllUsers</a><br>
+
+<h1>测试REST风格selectById</h1>
+<!--non-REST-->
+<!--<a th:href="@{/user?id=1}">getUserById</a><br>-->
+<!--REST-->
+<a th:href="@{/user/1}">getUserById</a><br>
+
+<h1>测试REST风格post</h1>
+<form th:action="@{/user}" method="post">
+    用户名:<input type="text" name="username" value="jack">
+    密码:<input type="password" name="password" value="123456">
+    <input type="submit"/>
+</form><br>
+
+<h1>测试REST风格select</h1>
+<a th:href="@{/user}">getAllUsers</a><br>
+<h1>测试REST风格select</h1>
+<a th:href="@{/user}">getAllUsers</a><br>
+
+<h1>测试REST风格put</h1>
+<form th:action="@{/user}" method="post">
+    <!--由HiddenHttpMethodFilter源码可知, 若要发送PUT, DELETE请求, 需伪装method:POST + hidden参数:_method-->
+    <input type="hidden" name="_method" value="PUT">
+    用户名:<input type="text" name="username" value="jack">
+    密码:<input type="password" name="password" value="123456">
+    <input type="submit" value="修改"/>
+</form><br>
+
+<h1>测试REST风格delete</h1>
+<form th:action="@{/user}" method="post">
+    <input type="hidden" name="_method" value="DELETE">
+</form><br>
+
+
+</body>
+</html>

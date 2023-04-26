@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.learnJava.mybatis.mapper.DynamicSQLMapper">
+
+    <!--动态sql之宏常量, 相当于给常用片段起别名-->
+    <sql id="columns">
+        eid, emp_name, age, sex, email
+    </sql>
+
+    <!--
+        在可定制化查询中, 查询条件可能为空, 因此不能将sql语句写死: where #{condA} and #{condB}
+            假如condA==null或空字符串, 则错误解析为: where null and condB 或 where and condB
+        因此, 需要使用mybatis动态sql机制, 确保解析始终符合sql语法
+    -->
+
+    <!--动态sql之多条件查询方法一: 恒成立条件 + if条件拼接, 只能动态拼接if条件前的and/or关键字-->
+    <select id="getEmpByMultipleConditions1" resultType="com.learnJava.pojo.Emp">
+        select <include refid="columns"/>
+        from t_emp where 1=1
+        <if test="empName != null and empName != ''">
+            and emp_name = #{empName}
+        </if>
+        <if test="age != null and age != ''">
+            and age = #{age}
+        </if>
+        <if test="sex != null and sex != ''">
+            and sex = #{sex}
+        </if>
+        <if test="email != null and email != ''">
+            and email = #{email}
+        </if>
+    </select>
+
+    <!--动态sql之多条件查询方法二: if + where条件拼接, 只能动态拼接if条件前的and/or关键字-->
+    <select id="getEmpByMultipleConditions2" resultType="com.learnJava.pojo.Emp">
+        select *
+        from t_emp
+        <where>
+            <if test="empName != null and empName != ''">
+                and emp_name = #{empName}
+            </if>
+            <if test="age != null and age != ''">
+                and age = #{age}
+            </if>
+            <if test="sex != null and sex != ''">
+                and sex = #{sex}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email}
+            </if>
+        </where>
+    </select>
+
+    <!--动态sql之多条件查询方法三: if + trim条件拼接, 能动态拼接if条件前后的and/or关键字-->
+    <select id="getEmpByMultipleConditions" resultType="com.learnJava.pojo.Emp">
+        select *
+        from t_emp
+        <trim  prefix="where" suffix="" prefixOverrides="" suffixOverrides="and|or">
+            <if test="empName != null and empName != ''">
+                emp_name = #{empName} and
+            </if>
+            <if test="age != null and age != ''">
+                age = #{age} and
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex} or
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email}
+            </if>
+        </trim>
+    </select>
+
+    <!--
+        动态sql之单选择查询: choose-when-otherwise,
+        相当于switch-case break-default, 只要满足任意条件就返回
+     -->
+    <!--List<Emp> getEmpByUniqueChoose(Emp emp);-->
+    <select id="getEmpByUniqueChoose" resultType="com.learnJava.pojo.Emp">
+        select *
+        from t_emp
+        <where>
+            <choose>
+                <when test="empName != null and empName != ''">
+                    emp_name = #{empName}
+                </when>
+                <when test="age != null and age != ''">
+                    and age = #{age}
+                </when>
+                <when test="sex != null and sex != ''">
+                    and sex = #{sex}
+                </when>
+                <when test="email != null and email != ''">
+                    and email = #{email}
+                </when>
+                <otherwise>
+                    and did = 1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <!--int multipleDeleteByArray(@Param("eids") Integer[] eids);-->
+    <delete id="multipleDeleteByArray">
+        delete
+        from t_emp where
+
+        <!--    批量删除1: where-in    -->
+        <!-- eid in-->
+        <!--    <foreach collection="eids" item="eid" separator="," open="(" close=")">-->
+        <!--        #{eid}-->
+        <!--    </foreach>-->
+
+        <!--    批量删除2: where-or   -->
+        <foreach collection="eids" item="eid" separator="or">
+            eid = #{eid}
+        </foreach>
+    </delete>
+
+    <insert id="multipleInsertByList">
+        insert into t_emp values
+        <foreach collection="emps" item="emp" separator=",">
+            (null, #{emp.empName}, #{emp.age}, #{emp.sex}, #{emp.email}, null)
+        </foreach>
+    </insert>
+</mapper>

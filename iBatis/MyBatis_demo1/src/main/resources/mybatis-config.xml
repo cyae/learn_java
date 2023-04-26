@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!--  类型别名, 可以在Mapper中使用类名代替全类名  -->
+    <typeAliases>
+        <!--  以包为单位起别名  -->
+        <package name="com.learnJava.mybatis.pojo"/>
+    </typeAliases>
+
+    <!--  数据库连接环境参数  -->
+    <environments default="development">
+        <!--开发环境-->
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <!--   使用数据库连接池    -->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/test_master_slave?serverTimezone=UTC"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--引入Mapper文件-->
+    <mappers>
+        <!-- 单文件引入 -->
+        <!--<mapper resource="mappers/UserMapper.xml"/>-->
+
+        <!--  以包为单位引入, 需要满足:
+          1. mapper接口与mapper.xml包结构一致
+          2. mapper接口与mapper.xml名字一致
+          -->
+        <package name="com.learnJava.mybatis.mapper"/>
+    </mappers>
+
+</configuration>

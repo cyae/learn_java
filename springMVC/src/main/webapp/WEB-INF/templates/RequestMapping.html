@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+<h1>首页</h1>
+<!--th语法, @{...}为目标页添加绝对路径前缀host:port/artifact-->
+<a th:href="@{/requestMapping/success}">用户列表.html</a>
+
+<br>
+
+测试@RequestMapping的method匹配, 以post方式返回index.html
+<form th:action="@{/requestMapping/success}" method="post">
+    <input type="submit"/>
+</form>
+</body>
+
+<br>
+
+测试@RequestMapping的method匹配, 以get方式返回index.html
+<form th:action="@{/requestMapping/success}" method="get">
+    <input type="submit"/>
+</form>
+
+<br>
+
+测试@RequestMapping的占位符
+<form th:action="@{/requestMapping/success/1}" method="get">
+    <input type="submit"/>
+</form>
+</html>
+

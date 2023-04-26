@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--  开启注解扫描  -->
+    <context:component-scan base-package="com.learn.springmvc" />
+
+    <!--  配置thymeleaf视图解析-->
+    <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+        <property name="order" value="1"/>
+        <property name="characterEncoding" value="UTF-8"/>
+        <property name="templateEngine" ref="templateEngine"/>
+    </bean>
+    <!-- 视图解析: 模板引擎 -->
+    <bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">
+        <property name="templateResolver" ref="templateResolver"/>
+    </bean>
+
+    <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+        <!--解析过程: 视图前缀 + 请求视图名称 + 视图后缀 -> 跳转页-->
+
+        <!--视图前缀-->
+        <property name="prefix" value="/WEB-INF/templates/"/>
+        <!--视图后缀-->
+        <property name="suffix" value=".html"/>
+
+        <property name="templateMode" value="HTML5"/>
+        <property name="characterEncoding" value="UTF-8"/>
+    </bean>
+
+    <!--
+        由于DispatcherServlet无法处理静态html/js/css/jpg资源,
+        因此添加默认servlet处理
+    -->
+    <mvc:default-servlet-handler/>
+
+    <!--  开启mvc注解驱动  -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <!--处理中文乱码-->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="defaultCharset" value="UTF-8"/>
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html</value>
+                        <value>application/json</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!--<mvc:view-controller path="/" view-name="ScopeDataSharing"/>-->
+
+    <!--  开启注解驱动  -->
+    <mvc:annotation-driven/>
+
+    <!--  配置文件上传解析器, 将文件封装为MultipartFile, 此bean由IOC容器自动调用  -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
+    <!--配置拦截器-->
+    <mvc:interceptors>
+        <!--bean类型的拦截器, 会拦截所有请求-->
+        <bean class="com.learn.springmvc.interceptor.myInterceptor"/>
+        <!--bean类型的拦截器的引用, 会拦截所有请求, 需要将拦截器注册到IOC容器-->
+        <ref bean="myInterceptor"/>
+
+        <!--interceptor类型拦截器, 可以指定拦截黑白名单-->
+        <mvc:interceptor>
+            <!--拦截黑名单, 此处表示拦截多层所有页面请求-->
+            <mvc:mapping path="/**"/>
+            <!--拦截白名单, 此处表示不拦截主页请求 local:port/artifact/-->
+            <mvc:exclude-mapping path="/"/>
+            <!--  具体拦截器, 可以是bean或引用  -->
+            <bean class="com.learn.springmvc.interceptor.myInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!--配置异常处理-->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.Exception">error/exception1</prop>
+                <prop key="java.lang.RuntimeException">error/exception2</prop>
+            </props>
+        </property>
+        <property name="exceptionAttribute" value="exception"/>
+        <property name="defaultErrorView" value="/error/exception"/>
+        <property name="defaultStatusCode" value="500"/>
+    </bean>
+
+</beans>

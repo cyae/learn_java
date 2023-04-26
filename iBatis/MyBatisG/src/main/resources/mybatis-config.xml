@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <properties resource="jdbc.properties"/>
+
+    <!--  类型别名, 可以在Mapper中使用类名代替全类名  -->
+    <typeAliases>
+        <package name="com.learnJava.mybatis.pojo"/>
+    </typeAliases>
+
+    <plugins>
+        <!--分页插件-->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
+
+    <!--  数据库连接环境参数  -->
+    <environments default="development">
+        <!--开发环境-->
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <!--   使用数据库连接池    -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--引入Mapper文件-->
+    <mappers>
+        <package name="com.learnJava.mybatis.mapper"/>
+    </mappers>
+
+</configuration>

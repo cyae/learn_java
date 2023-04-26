@@ -1,0 +1,73 @@
+<html>
+
+<head>
+    <title>组织基本unit</title>
+</head>
+
+
+<body>
+    <!-- 显式属性已淘汰，使用css -->
+    表格table
+    <table border="1" cellspacing="0" width="400" cellpadding="4">
+        <tr align="center">
+            <!-- 表头th -->
+            <th><b>首行列1</b></td>
+            <th><b>首行列2</b></td>
+            <th><b>首行列3</b></td>
+        </tr>
+
+        <tr align="center">
+            <td><i>第二行列1</i></td>
+            <td rowspan="2"><i>rowspan第二行列2</i></td>
+            <td><i>第二行列3</i></td>
+        </tr>
+
+        <tr align="center">
+            <td><u>第三行列1</u></td>
+            <td><u>第三行列3</u></td>
+        </tr>
+
+        <tr align="center">
+            <td><u>第4行列1</u></td>
+            <td colspan="3"><u>colspan第4行列3</u></td>
+        </tr>
+
+
+    </table>
+
+    <hr>
+    表单form
+    <form action="unit.html" method="post">
+
+        用户名: <input type="text" name="userName" id="1" value="请输入"><br>
+
+        密码：<input type="password" name="userPwd" id="2"><br>
+
+        <!-- 对于radio，name相同则互斥 -->
+        <!-- 默认选中：checked="checked" -->
+        性别：<input type="radio" name="gender" id="3" value="userMale">男
+        <input type="radio" name="gender" id="4" value="userFemale" checked>女<br>
+
+        <!-- 对于checkbox，name相同可共存，且服务端会获取到name数组 -->
+        爱好：<input type="checkbox" name="hobby" id="" value="userHobbyBasketball">篮球
+        <input type="checkbox" name="hobby" id="" value="userHobbyFootball">足球
+        <input type="checkbox" name="hobby" id="" value="userHobbyEarthball">地球<br>
+
+        <!-- 默认选中：selected="selected" -->
+        星座：<select name="constellation" id="">
+            <option value="aries">白羊座</option>
+            <option value="tarus">金牛座</option>
+            <option value="gemini" selected>双子座</option>
+        </select><br>
+
+        备注：<textarea name="remark" id="" cols="30" rows="10">
+        </textarea><br>
+
+        <input type="submit" value="注册">
+        <input type="reset" value="reset" id="">
+        <input type="button" value="普通按钮"><br>
+
+    </form>
+</body>
+
+</html>

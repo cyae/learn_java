@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.learnJava.mybatis.mapper.SelectMapper">
+
+    <!--User selectUserByUserId(@Param("id") Integer id);-->
+    <select id="selectUserByUserId" resultType="com.learnJava.mybatis.pojo.User">
+        select * from test_master_slave.t_user where id=#{id}
+    </select>
+
+    <!--List<User> getAllUser();-->
+    <select id="getAllUser" resultType="com.learnJava.mybatis.pojo.User">
+        select * from test_master_slave.t_user
+    </select>
+
+    <!--Integer getCount();-->
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(*)
+        from test_master_slave.t_user;
+    </select>
+
+    <!--Map<String, Object> getUserByUserIdToMap(@Param("id") Integer id);-->
+    <select id="getUserByUserIdToMap" resultType="java.util.Map">
+        select *
+        from test_master_slave.t_user
+        where id=#{id};
+    </select>
+
+    <!--@MapKey("id")-->
+    <!--Map<String, Object> getAllUserToMap();-->
+    <select id="getAllUserToMap" resultType="java.util.Map">
+        select *
+        from test_master_slave.t_user;
+    </select>
+</mapper>

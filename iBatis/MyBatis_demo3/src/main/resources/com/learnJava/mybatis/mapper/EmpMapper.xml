@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.learnJava.mybatis.mapper.EmpMapper">
+    <!--
+        为了解决查询时ORM命名冲突, 自定义字段column-类属性property映射关系
+    -->
+    <resultMap id="empResultMap" type="Emp">
+        <!--id为表中主键与类属性的映射-->
+        <id property="eid" column="eid"/>
+
+        <!--result为一般键与类属性的映射-->
+        <result property="empName" column="emp_name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <result property="email" column="email"/>
+    </resultMap>
+
+    <!--List<Emp> getAllEmp();-->
+    <select id="getAllEmp" resultMap="empResultMap">
+        select *
+        from t_emp;
+    </select>
+
+    <!--
+        多表联查, 查询结果为多个表字段的集合, 无法使用resultType映射到某一个类, 采用饿汉模式思想
+    -->
+    <resultMap id="empAndDeptResMap" type="Emp">
+        <id property="eid" column="eid"/>
+        <result property="empName" column="emp_name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <result property="email" column="email"/>
+
+        <!--
+            多对一映射1: 使用resultMap级联属性, 将多个字段对应的类定义为结果类的属性, 并自定义 多对一 映射关系
+        -->
+        <!--<result property="dept.did" column="did"/>-->
+        <!--<result property="dept.deptName" column="dept_name"/>-->
+
+        <!--
+            多对一映射2: 使用联合association, 需要指定属性的类型, 然后使用反射创建多类并赋值
+        -->
+        <association property="dept" javaType="com.learnJava.pojo.Dept">
+            <id property="deptName" column="dept_name"/>
+            <id property="did" column="did"/>
+        </association>
+
+    </resultMap>
+
+    <!--Emp getEmpAndDept(@Param("eid") Integer eid);-->
+    <select id="getEmpAndDept" resultMap="empAndDeptResMap">
+        select *
+        from t_emp
+        left join t_dept
+        on t_emp.did=t_dept.did
+        where t_emp.eid=#{eid}
+    </select>
+
+    <resultMap id="empAndDeptByStepResMap" type="com.learnJava.pojo.Emp">
+        <id property="eid" column="eid"/>
+        <result property="empName" column="emp_name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <result property="email" column="email"/>
+
+        <!--
+            多对一映射3: 使用分步查询 + 联合association, 需要定义每一步, 并在结果类指明:
+                3.1 select=方法全类名
+                3.2 column=转移条件
+                3.3 fetchType=如果mybatis开启全局懒加载, 此属性决定当前sql是否服从全局设置
+        -->
+        <association property="dept"
+                     select="com.learnJava.mybatis.mapper.DeptMapper.getDeptByEmpDid"
+                     column="did"
+                     fetchType="lazy"/>
+    </resultMap>
+    <!--Emp getEmpAndDeptByStep(@Param("eid") Integer eid);-->
+    <select id="getEmpAndDeptByStep" resultMap="empAndDeptByStepResMap">
+        select *
+        from t_emp
+        where eid=#{eid};
+    </select>
+</mapper>

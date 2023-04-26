@@ -1,0 +1,77 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+
+  # 1.数据源
+  datasource:
+    # mysql8+为com.mysql.cj.jdbc.Driver
+    driverClassName: com.mysql.jdbc.Driver
+
+    # mysql8-需要指定或关闭SSL
+    url: jdbc:mysql:///springboot?useSSL=false
+    # mysql8+需要指定时区
+    # url: jdbc:mysql://localhost:3306/t_user?useSSL=false&serverTimezone=UTC
+
+    username: root
+    password: root
+
+    # Hikari-快; Druid-性能监控
+    # type: com.zaxxer.hikari.HikariDataSource
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      aop-patterns: com.learn.springboot.* # springbean监控
+      filters: stat,wall,slf4j # 开启性能监控, 防火墙, 日志
+
+      # 性能监控配置
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: 123456
+        resetEnable: true
+      
+      # 用于配置Web和Druid数据源之间的管理关联监控统计
+      web-stat-filter:
+        enabled: true
+        urlPattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+      
+      filter:
+        stat:
+          slow-sql-millis: 1000
+          logSlowSql: true
+          enabled: true
+        wall:
+          enabled: true
+          config:
+            drop-table-allow: false
+
+
+  # 2.ORM框架
+  # 2.1 spring自带jdbcTemplate
+  # jdbc:
+  #   template:
+  #     query-timeout: 3
+  # mybatis:
+
+  # 3.缓存
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 5000
+    client-type: lettuce
+    lettuce:
+      pool:
+        max-active: 10
+        min-idle: 5
+# 性能监控
+management:
+  endpoints: 
+    enabled-by-default: true
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

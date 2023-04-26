@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--手动配置显示注入属性-->
+    <!--<bean id="autowire" class="com.learnjava.spring.model.AutoWireDummy">-->
+    <!--    <property name="user" ref="user"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="user" class="com.learnjava.spring.model.User">-->
+    <!--    <property name="id" value="1"/>-->
+    <!--    <property name="name" value="john"/>-->
+    <!--</bean>-->
+
+    <!--
+        自动配置隐式注入属性:
+           1. byName, 根据属性名称自动注入
+           2. byType, 根据属性类型自动注入
+    -->
+    <bean id="autowire" class="com.learnjava.spring.model.AutoWireDummy" autowire="byName"/>
+
+    <bean id="user" class="com.learnjava.spring.model.User">
+        <property name="id" value="1"/>
+        <property name="name" value="john"/>
+    </bean>
+</beans>

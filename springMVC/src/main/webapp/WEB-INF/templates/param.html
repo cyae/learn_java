@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>测试发送请求参数, 参数被Controller方法获取</title>
+</head>
+<body>
+<h1>测试通过原生ServletAPI获取请求参数</h1>
+<form th:action="@{/param/paramViaServletAPI}" method="post">
+    <input type="text" name="name" value="${name}" />
+    <input type="text" name="age" value="${age}" />
+    <input type="submit" value="通过ServletAPI" />
+</form>
+<br/>
+<a th:href="@{/param/paramViaServletAPI(name='admin', age=123456)}">通过ServletAPI</a>
+<br/>
+
+<h1>测试通过controller方法的形参获取请求参数</h1>
+<a th:href="@{/param/paramViaControllerArgs(name='admin', age=123456)}">通过ControllerArgs</a>
+<br/>
+
+
+<form th:action="@{/param/paramViaControllerArgs}" method="post">
+    <checkbox name="name" th:value="${name}">
+        <input type="checkbox" name="hobby" th:value="a">
+        <input type="checkbox" name="hobby" th:value="b">
+        <input type="checkbox" name="hobby" th:value="c">
+    </checkbox>
+    <input type="submit" value="通过ControllerArgs" />
+</form>
+
+<br/>
+
+<h1>测试通过@RequestParam注解获取请求参数</h1>
+<form th:action="@{/param/paramViaRequestParam}" method="post">
+    <input type="text" name="name" value="${name}" />
+    <input type="text" name="age" value="${age}" />
+    <input type="submit" value="通过@RequestParam" />
+</form>
+
+<br/>
+
+<h1>测试通过@RequestHeader注解获取请求头参数</h1>
+<a th:href="@{/param/paramViaRequestHeader}">通过@RequestHeader</a>
+<br/>
+
+<h1>测试通过@CookieValue注解获取cookie参数</h1>
+<a th:href="@{/param/paramViaCookieValue}">通过@CookieValue</a>
+<br/>
+
+<h1>测试通过POJO属性获取请求参数</h1>
+<form th:action="@{/param/paramViaPOJO}" method="post">
+    <input type="text" name="name" value="${name}" />
+    <input type="text" name="password" value="${password}" />
+    <input type="text" name="email" value="${email}" />
+    <input type="submit" value="通过POJO属性" />
+</form>
+
+
+
+</body>
+</html>

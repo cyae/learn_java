@@ -1,0 +1,4 @@
+# 当有多个环境, 如开发, 测试, 生产, 这些环境的配置文件属性可能不同
+spring:
+  profiles:
+    active: dev

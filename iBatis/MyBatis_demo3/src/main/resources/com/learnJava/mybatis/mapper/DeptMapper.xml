@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.learnJava.mybatis.mapper.DeptMapper">
+    <!--Dept getDeptByEmpDid(@Param("did") Integer did);-->
+    <select id="getDeptByEmpDid" resultType="com.learnJava.pojo.Dept">
+        select *
+        from t_dept
+        where did=#{did};
+    </select>
+
+    <resultMap id="deptAndEmpResMap" type="com.learnJava.pojo.Dept">
+        <id property="did" column="did"/>
+        <result property="deptName" column="dept_name"/>
+
+        <!--一对多映射1: 使用collection, 需要指定多类集合的泛型类型ofType-->
+        <collection property="emps" ofType="com.learnJava.pojo.Emp">
+            <id property="eid" column="eid"/>
+            <result property="empName" column="emp_name"/>
+            <result property="age" column="age"/>
+            <result property="sex" column="sex"/>
+            <result property="email" column="email"/>
+        </collection>
+    </resultMap>
+
+    <!--Dept getDeptAndEmpByDid(@Param("did") Integer did);-->
+    <select id="getDeptAndEmpByDid" resultMap="deptAndEmpResMap">
+        select *
+        from t_dept
+        left join t_emp
+        on t_dept.did=t_emp.did
+        where t_dept.did=#{did};
+    </select>
+
+    <!--一对多映射2: 使用延迟加载, 同多对一-->
+</mapper>

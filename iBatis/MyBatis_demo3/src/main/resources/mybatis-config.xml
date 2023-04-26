@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <properties resource="jdbc.properties"/>
+
+    <settings>
+        <!--为了解决ORM命名冲突, 将表中的 下划线字段 映射为 驼峰类属性-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+
+        <!--
+            开启分布查询延迟加载技术, 即对于某条级联查询sql:
+            将其分为多条sql分步执行, 结果一致
+            如果开启延迟加载, 则可以在执行多条sql的中途立即返回结果
+            功能上类比懒汉模式, 按需加载; 底层使用cglib的动态代理模式
+        -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+
+    <!--  类型别名, 可以在Mapper中使用类名代替全类名  -->
+    <typeAliases>
+        <package name="com.learnJava.pojo"/>
+    </typeAliases>
+
+    <!--  数据库连接环境参数  -->
+    <environments default="development">
+        <!--开发环境-->
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <!--   使用数据库连接池    -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--引入Mapper文件-->
+    <mappers>
+        <package name="com.learnJava.mybatis.mapper"/>
+    </mappers>
+
+</configuration>

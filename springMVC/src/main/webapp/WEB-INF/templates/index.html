@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工之家</title>
+</head>
+<body>
+
+<h1>员工之家</h1>
+<a th:href="@{/employee_home}">返回主页</a><br>
+<a th:href="@{/employee_home/employee}">列出所有员工</a><br>
+
+<table id="empTable" border="1" cellspacing="0" cellpadding="0" style="text-align: center">
+    <tr>
+        <!--第一行表头-->
+        <th colspan="5">Employee Info</th>
+    </tr>
+    <tr>
+        <!--第二行表头-->
+        <th>ID</th>
+        <th>lastName</th>
+        <th>email</th>
+        <th>gender</th>
+        <th>options (<a th:href="@{/employee_home/employee/add}">add</a>)</th>
+    </tr>
+    <tr th:each="employee : ${employees}">
+        <td th:text="${employee.id}"></td>
+        <td th:text="${employee.lastName}"></td>
+        <td th:text="${employee.email}"></td>
+        <td th:text="${employee.gender}"></td>
+        <td>
+            <a @click="deleteEmp" th:href="@{|/employee_home/employee/${employee.id}|}">delete</a>
+            <a th:href="@{|/employee_home/employee/${employee.id}|}">update</a>
+        </td>
+    </tr>
+</table>
+
+<form id="deleteForm" method="post">
+    <input type="hidden" name="_method" value="DELETE">
+</form>
+
+<!--导入静态资源vue-->
+<script type="text/javascript" th:src="@{/static/js/vue.js}"></script>
+
+<script type="text/javascript">
+    var vue = new Vue({
+        el: '#empTable',
+        methods: {
+            deleteEmp: function (event) {
+                var deleteForm = document.getElementById('deleteForm');
+                // 将触发click的href属性值赋给deleteForm的action属性
+                deleteForm.action = event.target.href;
+                deleteForm.submit();
+                // 取消超链接的默认跳转行为, 因为超链接只用作form的触发器
+                event.preventDefault();
+            }
+        }
+    });
+</script>
+
+<h2>添加栏</h2>
+<form th:action="@{/employee_home/employee/add}" method="post">
+    lastName:<input type="text" name="lastName"><br>
+    email:<input type="text" name="email"><br>
+    gender:<input type="radio" name="gender" value="0">male
+    <input type="radio" name="gender" value="1">female<br>
+    <input type="submit" value="add"><br>
+</form><br>
+
+<h2>修改栏, 点update后才能解析成功! 否则500</h2>
+<form th:action="@{/employee_home/employee}" method="post">
+    <input type="hidden" name="_method" value="put">
+    <input type="hidden" name="id" th:value="${employee.id}">
+    lastName:<input type="text" name="lastName" th:value="${employee.lastName}"><br>
+    email:<input type="text" name="email" th:value="${employee.email}"><br>
+    gender:<input type="radio" name="gender" value="0" th:field="${employee.gender}">male
+    <input type="radio" name="gender" value="1" th:field="${employee.gender}">female<br>
+    <input type="submit" value="update"><br>
+</form><br>
+
+
+</body>
+</html>

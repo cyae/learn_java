@@ -1,0 +1,20 @@
+# 前后端分离则无需这些设置
+spring:
+  mvc:
+    # 设置静态资源访问前缀, 区分动态请求
+    # static-path-pattern: /res/**
+
+    # 设置是否开启隐藏请求过滤器, 用于浏览器发送delete, put
+    hiddenmethod:
+      filter:
+        enabled: true
+  web:
+    resources:
+      # 设置可读取静态资源范围
+      static-locations: 
+        - classpath:/static
+        - classpath:/public
+        - classpath:/resources
+        - classpath:/META-INF/resources
+      # 设置是否开启静态资源访问
+      add-mappings: true

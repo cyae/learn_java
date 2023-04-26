@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.learnJava.mybatis.mapper.SpecialSQLMapper">
+
+    <!--List<User> getUserByLike(@Param("username") String username);-->
+    <select id="getUserByLike" resultType="com.learnJava.mybatis.pojo.User">
+        select *
+        from t_user
+        <!--    拼接一: 由于模糊查询需要拼接非值字符%, 必须使用拼接符${}, 如果用占位符#{}, 会被解析为%?%    -->
+        <!--    where username like '%${username}%';-->
+
+        <!--    拼接二: 或使用mysql自带的concat函数进行拼接    -->
+        <!--    where username like concat('%', #{username}, '%')-->
+
+        <!--    拼接三:-->
+        where username like "%"#{username}"%"
+    </select>
+
+    <!--int deleteUserById(@Param("ids") String ids);-->
+    <delete id="deleteUserById">
+        <!--    由于删除所需ids本身已经含有非值字符, 比如"1,2,3"中的逗号, 因此不能使用占位符#{}, 会被解析为("1,2,3")    -->
+        delete from t_user where id in (${ids})
+    </delete>
+
+    <!--List<User> getUserByTableName(@Param("tableName") String tableName);-->
+    <select id="getUserByTableName" resultType="com.learnJava.mybatis.pojo.User">
+        select *
+        from ${tableName}
+    </select>
+
+    <!--void insertUser(@Param("user") User user);-->
+    <!--获取自动递增的主键值useGeneratedKeys, 并且由于返回值确定为void, 则获取到的主键值只能设置到记录的keyProperty上-->
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user values (null, #{username}, #{password}, #{age}, #{sex}, #{email})
+    </insert>
+</mapper>

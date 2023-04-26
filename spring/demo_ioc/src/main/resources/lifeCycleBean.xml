@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="lifeCycle"
+          class="com.learnjava.spring.model.LifeCycle"
+          init-method="init"
+          destroy-method="destroy">
+        <property name="id" value="1"/>
+    </bean>
+
+    <!--为当前xml中的所有bean配置后置处理器, 底层为AOP-->
+    <bean id="beanPostProcesser" class="com.learnjava.spring.model.BeanPostProcessorImpl"/>
+</beans>

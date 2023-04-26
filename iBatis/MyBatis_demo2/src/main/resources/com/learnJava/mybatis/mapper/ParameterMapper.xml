@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.learnJava.mybatis.mapper.ParameterMapper">
+
+    <!--  User getUserByUserName(String username);  -->
+    <select id="getUserByUserName" resultType="com.learnJava.mybatis.pojo.User">
+        <!-- 单参数传递1: #{_parameter}表示占位符, 相当于jdbc的 "where username=?" }-->
+        <!--select * from test_master_slave.t_user where username=#{_parameter}-->
+
+        <!-- 单参数传递2: ${?}表示字符串拼接, 相当于jdbc的 "where username=" + "'张三'"     -->
+        select * from test_master_slave.t_user where username='${_parameter}';
+    </select>
+
+    <!--User checkLogin(String username, String password);-->
+    <select id="checkLoginByDefaultMap" resultType="com.learnJava.mybatis.pojo.User">
+        select *
+        from test_master_slave.t_user
+        <!--    多参数传递1: Mybatis底层使用哈希表存储多个参数, key为param1,param2...    -->
+        where username=#{param1} and password=#{param2};
+    </select>
+
+    <!--User checkLoginByMap(Map<String, Object> map);-->
+    <select id="checkLoginByCustomizedMap" resultType="com.learnJava.mybatis.pojo.User">
+        select *
+        from test_master_slave.t_user
+        <!--    多参数传递2: 也可以使用自定义哈希表存储多个参数, key可以自定义    -->
+        where username=#{username} and password=#{password}
+    </select>
+
+    <!--User checkLoginByParamAnnotation(@Param("anno_username") String username, @Param("anno_password") String password);-->
+    <select id="checkLoginByParamAnnotation" resultType="com.learnJava.mybatis.pojo.User">
+        <!--    💡混合参数传递: 使用@Param("param_name")注解传递参数    -->
+        select * from test_master_slave.t_user
+        where username=#{anno_username} and password=#{anno_password};
+    </select>
+
+    <!--int insertUser(User user);-->
+    <insert id="insertUser">
+        <!--    💡传递参数是对象实例的属性    -->
+        insert into test_master_slave.t_user values (null, #{username}, #{password}, #{age}, #{sex}, #{email})
+    </insert>
+
+</mapper>

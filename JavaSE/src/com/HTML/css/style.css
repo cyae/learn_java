@@ -1,0 +1,75 @@
+/* CSS环境 */
+
+/* 取消预留8px */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+
+#div1 {
+    width: 400px;
+    height: 400px;
+    background-color: antiquewhite;
+
+    /* border */
+
+    /* border-width: 4px;
+    border-style:dotted;
+    border-color: blue;  */
+
+
+    /* 以上三句等同于： */
+    border: 4px dotted blue
+}
+
+#div2 {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+    border: 6px solid grey;
+
+    /* margin-top: 100px;
+    margin-left: 100px; */
+
+    /* 以上两句等价于 顺时针 上右下左 */
+    margin: 100px 0px 0px 100px;
+
+    /* 填充 */
+    padding: 50px 0px 0px 50px;
+
+}
+
+#div3 {
+    width: 100px;
+    height: 100px;
+    background-color: aliceblue;
+
+    /* 继续居中，可以在子盒子div3里如下 */
+    /* margin-top: 50px;
+    margin-left: 50px; */
+
+    /* 也可以在父盒子div2里填充 */
+}
+
+#div4 {
+    width: 200px;
+    height: 50px;
+    background: green;
+
+    /* 如果position为绝对，则以总页面0，0为坐标原点，向右下走left-right */
+    position: absolute;
+    left: 100px;
+    right: 100px;
+}
+
+#div5 {
+    width: 200px;
+    height: 50px;
+    background: blueviolet;
+
+    /* 如果position为相对，则float在父盒子里浮动 */
+    position: relative;
+    float: right;
+    margin-right: 10px;
+}

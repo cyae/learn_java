@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <!--  手动配置前端控制器Controller, 用于分派浏览器的请求  -->
+    <servlet>
+        <servlet-name>spring-mvc.xml</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+
+        <!--配置springmvc配置文件的名称+位置-->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring-mvc.xml</param-value>
+        </init-param>
+
+        <!--配置dispatcherServlet的初始化时机为随tomcat启动-->
+        <!--如不配置, 则为第一次请求时初始化dispatcherServlet-->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>spring-mvc.xml</servlet-name>
+        <!--
+            设置拦截请求,
+                /xxx.do     表示拦截xxx.do请求
+                /*          表示拦截所有请求
+                /           表示拦截除.jsp之外的所有请求
+                为什么不需要拦截.jsp请求呢?
+                因为.jsp本身就是servlet,无需dispatcherServlet分派给其他servlet(service)处理
+        -->
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <!--配置编码过滤器-->
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <!--此处追到Filter的父类CharacterEncodingFilter的doFilterInternal方法-->
+            <!--方法内包含局部变量String encoding, 表示请求编码-->
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+
+        <init-param>
+            <!--根据doFilterInternal方法的逻辑, 设置forceResponseEncoding变量, 表示响应编码-->
+            <param-name>forceResponseEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--
+        配置隐藏域属性过滤器, 用于接收PUT, DELETE请求
+        注意, 隐藏域属性过滤器必须放在编码过滤器之后, 因为HiddenHttpMethodFilter获取过_method参数
+        如果放在编码过滤器之前, 则CharacterEncodingFilter失效
+    -->
+    <filter>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+</web-app>

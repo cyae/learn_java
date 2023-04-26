@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>首页</title>
+    </head>
+
+    <body>
+        <h1>Welcome123!</h1>
+    </body>
+
+    <form action="/user" method="get">
+        <input type="submit" value="GET">
+    </form>
+    <form action="/user" method="post">
+        <input type="submit" value="POST">
+    </form>
+    <form action="/user" method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="submit" value="DELETE">
+    </form>
+    <form action="/user" method="post">
+        <input type="hidden" name="_method" value="PUT">
+        <input type="submit" value="PUT">
+    </form>
+
+    <form action="/pet" method="post">
+        <input name="pet" value="cat,3">
+        <input type="submit" value="save">
+    </form>
+</html>

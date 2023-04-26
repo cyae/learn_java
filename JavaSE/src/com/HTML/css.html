@@ -1,0 +1,70 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+        /* CSS环境 */
+
+        /* 标签样式表，对某标签进行修饰 */
+        p {
+            color: red;
+        }
+
+        /* 类样式，只定义一种样式类，作用于任意使用该类的unit元素 */
+        .f20 {
+            font-size: 20px;
+        }
+
+        /* id样式，作用于某个unit元素，在整个html中保持唯一 */
+        #bg {
+            background-color: pink;
+            font-size: 24px;
+            font-weight: bolder;
+            font-style: italic;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* 组合样式，以上三者之间的组合，表明嵌套 */
+        div p {
+            color: blue;
+        }
+    </style>
+    <!-- 随着样式定义的增加，需要将css环境里的代码单独放在.css文件 -->
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <!-- 比如有若干段落，需要文字为红色，html做法： -->
+    <!-- <p>
+        <font color="red">text1</font>
+    </p>
+    <p>
+        <font color="red">text1</font>
+    </p>
+    <p>
+        <font color="red">text1</font>
+    </p>
+    <p>
+        <font color="red">text1</font>
+    </p>
+    <!-- 很麻烦！！ -->
+
+    <p>text1</p>
+    <p>text1</p>
+    <p class="f20">text1</p>
+    <p>text1</p>
+    <p id="bg">text1</p>
+
+    <div>
+        <!-- 组合样式取代了标签样式 -->
+        <p><span>hello</span></p>
+
+        <span>world</span>
+
+        <!-- 内部样式取代了组合样式 -->
+        <p style="font-size: larger; color: aqua;">!!!</p>
+    </div>
+
+</body>
+
+</html>

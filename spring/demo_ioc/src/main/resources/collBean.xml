@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="coll" class="com.learnjava.spring.model.CollType">
+        <property name="array">
+            <array value-type="java.lang.String">
+                <value>123</value>
+                <value>456</value>
+            </array>
+        </property>
+
+        <property name="list">
+            <!--使用命名空间util, 将此list抽取成共享的属性注入, 其他list<String>属性可直接ref指向此id-->
+            <util:list value-type="java.lang.String" id="commonList ">
+                <value>123</value>
+                <value>456</value>
+            </util:list>
+        </property>
+
+        <property name="map">
+            <map key-type="java.lang.String" value-type="java.lang.String">
+                <entry key="123" value="qwe"/>
+                <entry key="456" value="asd"/>
+            </map>
+        </property>
+
+        <property name="set">
+            <set value-type="java.lang.String">
+                <value>123</value>
+                <value>456</value>
+            </set>
+        </property>
+
+        <property name="userList">
+            <list value-type="com.learnjava.spring.model.User">
+                <!--使用内部bean, 高耦合, 低复用-->
+                <bean id="user1" class="com.learnjava.spring.model.User">
+                    <property name="id" value="12"/>
+                    <property name="name" value="tom"/>
+                </bean>
+
+                <!--使用外部bean, 低耦合, 高复用-->
+                <ref bean="user2"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="user2" class="com.learnjava.spring.model.User">
+        <property name="id" value="22"/>
+        <property name="name" value="lee"/>
+    </bean>
+
+</beans>

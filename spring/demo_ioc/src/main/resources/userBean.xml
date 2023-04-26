@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           ">
+
+    <!-- ioc配置创建对象 -->
+    <bean id="user1" class="com.learnjava.spring.model.User">
+        <!--ioc配置setter注入属性-->
+        <property name="id" value="1"/>
+
+        <!--如果属性值含有特殊符号, 与xml语法冲突, 比如"<" ">", 可使用CDATA转义-->
+        <property name="name">
+            <value><![CDATA[<<程序员的自我修养>>]]></value>
+        </property>
+    </bean>
+
+    <bean id="user2" class="com.learnjava.spring.model.User">
+        <!--ioc配置有参构造器注入属性-->
+        <constructor-arg name="id" value="1"/>
+
+        <!--设置name属性为null-->
+        <constructor-arg name="name">
+            <null/>
+        </constructor-arg>
+    </bean>
+
+    <!--p命名空间同时配置 创建对象 + setter属性注入-->
+    <bean id="user3" class="com.learnjava.spring.model.User" p:id="1" p:name="jack"/>
+</beans>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>测试请求响应报文与java类的转换</title>
+</head>
+<body>
+<script type="text/javascript" th:src="@{/static/js/vue.js}"></script>
+<script type="text/javascript" th:src="@{/static/js/axios.min.js}"></script>
+
+<h1>测试请求响应报文与java类的转换</h1>
+
+<h2>测试@ResquestBody</h2>
+<form th:action="@{/resbody/testRequestBody}" method="post">
+    <input type="text" name="username">
+    <input type="password" name="password">
+    <input type="submit" value="提交">
+</form>
+
+<h2>测试RequestEntity</h2>
+<form th:action="@{/resbody/testRequestEntity}" method="post">
+    <input type="text" name="username">
+    <input type="password" name="password">
+    <input type="submit" value="提交">
+</form>
+
+<h2>测试servlet原生api</h2>
+<a th:href="@{/resbody/testHttpResponse}">测试servlet原生api</a>
+
+<h2>测试@ResponseBody</h2>
+<a th:href="@{/resbody/testResponseBody}">测试@ResponseBody</a>
+
+<h2>测试@ResponseBody + JSON</h2>
+<a th:href="@{/resbody/testResponseBodyWithJson}">测试@ResponseBody + JSON</a>
+
+<div id="app">
+    <a @click="testAxios" th:href="@{/resbody/testAxios}">测试springMVC处理ajax</a>
+</div>
+
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!'
+        },
+        methods: {
+            testAxios: function (event) {
+                axios({
+                    method: 'post',
+                    url: event.target.href,
+                    params: {
+                        username: "admin",
+                        password: "123456"
+                    }
+                }).then(function (response) {
+                    alert(response.data);
+                });
+                event.preventDefault();
+            }
+        }
+    })
+</script>
+
+<h2>测试ResponseEntity下载文件</h2>
+<a th:href="@{/resbody/testDownloadViaResponseEntity}">测试ResponseEntity下载文件</a><br>
+
+<h2>测试上传文件</h2>
+<!--
+    enctype表示form传输格式, 默认为application/x-www-form-urlencoded键值对形式
+    因为要上传文件, 所以改成multipart/form-data二进制形式
+-->
+<form th:action="@{/resbody/testUpload}" method="post" enctype="multipart/form-data">
+    头像: <input type="file" name="file"><br>
+    <input type="submit" value="上传">
+</form>
+
+
+</body>
+</html>
